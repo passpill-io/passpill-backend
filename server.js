@@ -16,20 +16,20 @@ app.use(function (req, res, next) {
 
 
 var controller = require('./backend/controller');
-app.post('/api/getVault', (req, res) => {
-	controller.getVault( req, {}, (err, value) => {
+app.post('/api/getPill', (req, res) => {
+	controller.getPill( req, {}, (err, value) => {
 		res.status(value.statusCode).send( value.body );
 	});
 });
 
-app.post('/api/createVault', (req, res) => {
-	controller.createVault(req, {}, (err, value) => {
+app.post('/api/createPill', (req, res) => {
+	controller.createPill(req, {}, (err, value) => {
 		res.status(value.statusCode).send( value.body );
 	});
 });
 
-app.post('/api/updateVault', (req, res) => {
-	controller.updateVault(req, {}, (err, value) => {
+app.post('/api/updatePill', (req, res) => {
+	controller.updatePill(req, {}, (err, value) => {
 		res.status(value.statusCode).send( value.body );
 	});
 });

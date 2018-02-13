@@ -5,11 +5,11 @@ var path = require('path'),
 module.exports = function( options ){
 	var basePath = options.dataPath;
 
-	var getVaultDir = function( id ){
+	var getPillDir = function( id ){
 		return path.join( basePath, id.slice(0,2) );
 	}
-	var getVaultPath = function( id ){
-		return path.join( getVaultDir(id), id );
+	var getPillPath = function( id ){
+		return path.join( getPillDir(id), id );
 	}
 
 	var getPromise = function( clbk ){
@@ -26,27 +26,27 @@ module.exports = function( options ){
 	}
 	
 	return {
-		getVault: function( id, verbose ){
+		getPill: function( id, verbose ){
 			return getPromise( resolve => {
-				fs.readFile(getVaultPath(id), 'utf8', (err, data) => {
+				fs.readFile(getPillPath(id), 'utf8', (err, data) => {
 					resolve( data, verbose && err );
 				});
 			});
 		},
 
-		saveVault: function( id, content ){
+		savePill: function( id, content ){
 			return getPromise( resolve => {
-				fs.writeFile(getVaultPath(id), content, err => {
+				fs.writeFile(getPillPath(id), content, err => {
 					if (!err) return resolve(true);
 
 					// If the problem is not an unexistant parent dir, end
 					if (err.code !== 'ENOENT') return resolve(false, err);
 					
 					// Otherwise create parent dir
-					fs.mkdir(getVaultDir(id), err => {
+					fs.mkdir(getPillDir(id), err => {
 						if (err) return resolve(false, err);
 
-						fs.writeFile(getVaultPath(id), content, err => {
+						fs.writeFile(getPillPath(id), content, err => {
 
 							// No error allowed now
 							resolve( !err, err );

@@ -2,7 +2,7 @@ var config = require('./config');
 var md5 = require('crypto-js/md5');
 
 module.exports = {
-	getVault: function( event, context, callback ){
+	getPill: function( event, context, callback ){
 		console.log('here');
 		var {u, p} = event.body,
 			errorClbk = getErrorClbk( callback )
@@ -13,19 +13,19 @@ module.exports = {
 		if (u.length !== 32 || p.length !== 40 ) return errorClbk(400, 'bad_params');
 
 
-		config.storeAdapter.getVault( u, true ).then( vault => {
-			if( !vault ) return errorClbk( 404, 'unknown_vault');
+		config.storeAdapter.getPill( u, true ).then( pill => {
+			if( !pill ) return errorClbk( 404, 'unknown_pill');
 			
 			var hash = md5(u + p).toString();
-			if (vault.slice(0, hash.length) !== hash) return;
-			var content = vault.slice(hash.length);
+			if (pill.slice(0, hash.length) !== hash) return;
+			var content = pill.slice(hash.length);
 			
 			if (!content) return errorClbk( 401, 'wrong_credentials');
 			
 			callback( null, {statusCode: 200, body: content} );
 		});
 	},
-	createVault: function( event, context, callback ){
+	createPill: function( event, context, callback ){
 		var { u, p, v } = event.body,
 			errorClbk = getErrorClbk(callback)
 		;
@@ -35,19 +35,19 @@ module.exports = {
 		if (u.length !== 32 || p.length !== 40) return errorClbk(400, 'bad_params');
 		
 
-		config.storeAdapter.getVault(u).then(vault => {
-			if (vault) return errorClbk(400, 'vault_already_exist');
+		config.storeAdapter.getPill(u).then(pill => {
+			if (pill) return errorClbk(400, 'pill_already_exist');
 
 			var hash = md5(u + p).toString();
-			config.storeAdapter.saveVault( u, hash+v ).then( saved => {
+			config.storeAdapter.savePill( u, hash+v ).then( saved => {
 				if (saved) {
 					return callback(null, { statusCode: 200, body: v });
 				}
-				errorClbk( 500, 'unexpected_creating_vault');
+				errorClbk( 500, 'unexpected_creating_pill');
 			});
 		});
 	},
-	updateVault: function( event, context, callback ){
+	updatePill: function( event, context, callback ){
 		var { u, p, v } = event.body,
 			errorClbk = getErrorClbk(callback)
 		;
@@ -56,17 +56,17 @@ module.exports = {
 		if (typeof u !== 'string' || typeof p !== 'string' || typeof v !== 'string') return errorClbk(400, 'bad_params');
 		if (u.length !== 32 || p.length !== 40) return errorClbk(400, 'bad_params');		
 
-		config.storeAdapter.getVault(u).then(vault => {
-			if (!vault) return errorClbk(404, 'unknown_vault');
+		config.storeAdapter.getPill(u).then(pill => {
+			if (!pill) return errorClbk(404, 'unknown_pill');
 
 			var hash = md5(u + p).toString();
-			if (vault.slice(0, hash.length) !== hash) return errorClbk(401, 'wrong_credentials');
+			if (pill.slice(0, hash.length) !== hash) return errorClbk(401, 'wrong_credentials');
 			
-			config.storeAdapter.saveVault(u, hash + v).then(saved => {
+			config.storeAdapter.savePill(u, hash + v).then(saved => {
 				if (saved) {
 					return callback(null, { statusCode: 200, body: v });
 				}
-				return errorClbk(500, 'unexpected_saving_vault');
+				return errorClbk(500, 'unexpected_saving_pill');
 			});
 		});
 	}
