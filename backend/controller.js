@@ -17,7 +17,7 @@ module.exports = {
 			if( !pill ) return errorClbk( 404, 'unknown_pill');
 			
 			var hash = md5(u + p).toString();
-			if (pill.slice(0, hash.length) !== hash) return;
+			if (pill.slice(0, hash.length) !== hash) return errorClbk(401, 'wrong_credentials');
 			var content = pill.slice(hash.length);
 			
 			if (!content) return errorClbk( 401, 'wrong_credentials');
