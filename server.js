@@ -15,7 +15,7 @@ app.use(function (req, res, next) {
 });
 
 
-var controller = require('./backend/controller');
+var controller = require('./src/controller');
 app.post('/api/getPill', (req, res) => {
 	controller.getPill( req, {}, (err, value) => {
 		res.status(value.statusCode).send( value.body );

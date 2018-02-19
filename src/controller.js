@@ -3,7 +3,6 @@ var md5 = require('crypto-js/md5');
 
 module.exports = {
 	getPill: function( event, context, callback ){
-		console.log('here');
 		var {u, p} = event.body,
 			errorClbk = getErrorClbk( callback )
 		;
