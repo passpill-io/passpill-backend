@@ -9,7 +9,7 @@ module.exports = {
 
 		if (!u || !p) return errorClbk( 400, 'missing_params');
 		if (typeof u !== 'string' || typeof p !== 'string') return errorClbk(400, 'bad_params');
-		if (u.length !== 32 || p.length !== 40 ) return errorClbk(400, 'bad_params');
+		if (u.length !== 32 || p.length !== 32 ) return errorClbk(400, 'bad_params');
 
 
 		config.storeAdapter.getPill( u, true ).then( pill => {
@@ -31,7 +31,7 @@ module.exports = {
 
 		if (!u || !p || !v) return errorClbk(400, 'missing_params');
 		if (typeof u !== 'string' || typeof p !== 'string' || typeof v !== 'string') return errorClbk(400, 'bad_params');
-		if (u.length !== 32 || p.length !== 40) return errorClbk(400, 'bad_params');
+		if (u.length !== 32 || p.length !== 32) return errorClbk(400, 'bad_params');
 		
 
 		config.storeAdapter.getPill(u).then(pill => {
@@ -53,7 +53,7 @@ module.exports = {
 
 		if (!u || !p || !v) return errorClbk(400, 'missing_params');
 		if (typeof u !== 'string' || typeof p !== 'string' || typeof v !== 'string') return errorClbk(400, 'bad_params');
-		if (u.length !== 32 || p.length !== 40) return errorClbk(400, 'bad_params');		
+		if (u.length !== 32 || p.length !== 32) return errorClbk(400, 'bad_params');		
 
 		config.storeAdapter.getPill(u).then(pill => {
 			if (!pill) return errorClbk(404, 'unknown_pill');
